@@ -1,16 +1,267 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقعي</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>موقعي</title>
+
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#111827;
+      --card:#0b1220cc;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --border:#243041;
+      --accent:#22c55e;
+      --accent2:#38bdf8;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 80% 10%, #1d4ed833, transparent 60%),
+                  radial-gradient(1000px 700px at 10% 20%, #22c55e22, transparent 55%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+
+    .container{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 10px 0 18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+
+    .logo{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 30px #22c55e22;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid var(--border);
+      padding:8px 12px;
+      border-radius:999px;
+      background:#0b122066;
+      font-size:14px;
+    }
+    .chip:hover{ border-color:#3b82f6aa; }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:16px;
+      align-items:stretch;
+      margin-top: 8px;
+    }
+
+    .card{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:18px;
+      box-shadow: 0 20px 60px #00000040;
+      backdrop-filter: blur(10px);
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: 28px;
+      line-height:1.2;
+    }
+    p{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size: 15px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+
+    button, .btn{
+      border:none;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn-primary{
+      background: linear-gradient(135deg, var(--accent), #16a34a);
+      color:#05130a;
+      box-shadow: 0 14px 30px #22c55e25;
+    }
+    .btn-primary:hover{ filter: brightness(1.05); }
+
+    .btn-secondary{
+      background:#0b1220;
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+    .btn-secondary:hover{ border-color:#22c55e88; }
+
+    .image-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .img{
+      width:100%;
+      border-radius:18px;
+      border:1px solid var(--border);
+      overflow:hidden;
+      background:#0b1220;
+    }
+    .img img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+    .caption{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top: 14px;
+    }
+
+    .mini h3{
+      margin:0 0 6px;
+      font-size: 16px;
+    }
+    .mini p{ margin:0; font-size: 13px; }
+
+    footer{
+      margin-top: 18px;
+      color:var(--muted);
+      font-size: 12px;
+      text-align:center;
+      padding: 10px 0 0;
+    }
+
+    /* موبايل */
+    @media (max-width: 860px){
+      .hero{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr; }
+      h1{ font-size: 24px; }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div>موقعي</div>
+          <div style="color:#9ca3af;font-size:12px;font-weight:600;">نسخة بسيطة وجميلة</div>
+        </div>
+      </div>
 
-    <h2>مرحباً بك في موقعي</h2>
-    <p>إليك الصورة التي طلبتها:</p>
-    
-    <img src="https://via.placeholder.com/300" alt="صورة تجريبية">
+      <nav class="nav">
+        <a class="chip" href="#home">الرئيسية</a>
+        <a class="chip" href="#about">عنّي</a>
+        <a class="chip" href="#contact">تواصل</a>
+      </nav>
+    </header>
 
+    <section class="hero" id="home">
+      <div class="card">
+        <h1>مرحباً بك في موقعي 👋</h1>
+        <p>
+          دي صفحة بداية بسيطة، لكن شكلها مرتب ومناسب للموبايل. تقدر تضيف صورك ومعلوماتك
+          وتعمل صفحات تانية بعد كده.
+        </p>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="alert('تمام! قولّي عايز الزرار يعمل إيه (يفتح صفحة؟ ينزل ملف؟ يروح لمكان؟)')">
+            ابدأ الآن
+          </button>
+
+          <a class="btn btn-secondary" href="#about" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">
+            اعرف أكتر
+          </a>
+        </div>
+
+        <div class="grid" id="about">
+          <div class="card mini">
+            <h3>🎨 تصميم</h3>
+            <p>كروت + ظل خفيف + شكل حديث.</p>
+          </div>
+          <div class="card mini">
+            <h3>📱 موبايل</h3>
+            <p>بيظبط نفسه تلقائيًا على الشاشات الصغيرة.</p>
+          </div>
+          <div class="card mini">
+            <h3>⚡ بسيط</h3>
+            <p>HTML + CSS فقط، سريع وسهل التعديل.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card image-wrap">
+        <div class="img">
+          <img src="https://via.placeholder.com/900x600" alt="صورة تجريبية">
+        </div>
+        <div class="caption">
+          تقدر تستبدل الصورة دي بصورة من عندك (هقولك إزاي).
+        </div>
+
+        <div class="card mini" id="contact">
+          <h3>📩 تواصل</h3>
+          <p>
+            اكتب هنا وسائل التواصل بتاعتك (Instagram / WhatsApp / Email).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> — تم إنشاؤه باستخدام GitHub Pages
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

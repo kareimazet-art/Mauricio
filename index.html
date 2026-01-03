@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>موقعي</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>موقع الصور - عرض + تحميل</title>
 
   <style>
     :root{
@@ -15,65 +15,53 @@
       --border:#243041;
       --accent:#22c55e;
       --accent2:#38bdf8;
+      --danger:#ef4444;
+      --warn:#f59e0b;
     }
-
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
       color:var(--text);
-      background: radial-gradient(1200px 800px at 80% 10%, #1d4ed833, transparent 60%),
-                  radial-gradient(1000px 700px at 10% 20%, #22c55e22, transparent 55%),
-                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      background:
+        radial-gradient(1200px 800px at 80% 10%, #1d4ed833, transparent 60%),
+        radial-gradient(1000px 700px at 10% 20%, #22c55e22, transparent 55%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
       min-height:100vh;
     }
 
-    .container{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 22px 16px 40px;
-    }
-
+    .container{max-width:1100px;margin:auto;padding:20px 16px 50px}
     header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding: 10px 0 18px;
     }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:700;
-      letter-spacing:.2px;
-    }
-
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900}
     .logo{
-      width:38px;
-      height:38px;
-      border-radius:12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 10px 30px #22c55e22;
+      width:40px;height:40px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 12px 35px #22c55e22;
+      flex:0 0 auto;
     }
+    .sub{color:var(--muted);font-size:12px;font-weight:800;margin-top:2px}
 
-    .nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
+    .nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .chip{
-      text-decoration:none;
-      color:var(--text);
+      text-decoration:none;color:var(--text);
       border:1px solid var(--border);
-      padding:8px 12px;
-      border-radius:999px;
-      background:#0b122066;
-      font-size:14px;
+      padding:9px 12px;border-radius:999px;
+      background:#0b122066;font-size:14px;font-weight:800;
     }
-    .chip:hover{ border-color:#3b82f6aa; }
+    .chip:hover{border-color:#3b82f6aa}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 20px 60px #00000040;
+      backdrop-filter: blur(10px);
+    }
 
     .hero{
       display:grid;
@@ -83,105 +71,132 @@
       margin-top: 8px;
     }
 
-    .card{
-      background: var(--card);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:18px;
-      box-shadow: 0 20px 60px #00000040;
-      backdrop-filter: blur(10px);
-    }
+    h1{margin:0 0 10px;font-size:28px;line-height:1.2}
+    p{margin:0 0 14px;color:var(--muted);line-height:1.8;font-size:15px}
 
-    h1{
-      margin:0 0 10px;
-      font-size: 28px;
-      line-height:1.2;
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .btn{
+      border:none;cursor:pointer;
+      border-radius:14px;padding:12px 14px;
+      font-weight:900;font-size:14px;
+      text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
+      gap:8px;
     }
-    p{
-      margin:0 0 14px;
-      color:var(--muted);
-      line-height:1.8;
-      font-size: 15px;
-    }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-
-    button, .btn{
-      border:none;
-      cursor:pointer;
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
     .btn-primary{
-      background: linear-gradient(135deg, var(--accent), #16a34a);
-      color:#05130a;
-      box-shadow: 0 14px 30px #22c55e25;
+      background:linear-gradient(135deg,var(--accent), #16a34a);
+      color:#05130a;box-shadow:0 14px 30px #22c55e25;
     }
-    .btn-primary:hover{ filter: brightness(1.05); }
-
+    .btn-primary:hover{filter:brightness(1.05)}
     .btn-secondary{
-      background:#0b1220;
-      color:var(--text);
-      border:1px solid var(--border);
+      background:#0b1220;color:var(--text);border:1px solid var(--border);
     }
-    .btn-secondary:hover{ border-color:#22c55e88; }
+    .btn-secondary:hover{border-color:#22c55e88}
 
-    .image-wrap{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    .mini h3{margin:0 0 6px;font-size:16px}
+    .mini p{margin:0;font-size:13px}
+
+    /* Toolbar */
+    .toolbar{
+      display:flex;gap:10px;flex-wrap:wrap;
+      align-items:center;justify-content:space-between;
+      margin: 12px 0 14px;
     }
-    .img{
-      width:100%;
-      border-radius:18px;
+    .leftTools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .rightTools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+
+    .input, select{
+      background:#0b1220aa;color:var(--text);
       border:1px solid var(--border);
-      overflow:hidden;
-      background:#0b1220;
+      border-radius:14px;padding:12px 12px;outline:none;
+      font-weight:800;font-size:14px;
     }
-    .img img{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-    .caption{
+    .input{width:min(520px, 100%)}
+    .badge{
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid var(--border);
+      background:#0b122066;
+      padding:8px 10px;border-radius:999px;
     }
 
-    .grid{
+    /* Gallery */
+    .gallery{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap:14px;
     }
-
-    .mini h3{
-      margin:0 0 6px;
-      font-size: 16px;
+    .pic{overflow:hidden;padding:0}
+    .thumb{
+      width:100%;height:200px;object-fit:cover;display:block;
+      border-bottom:1px solid var(--border);
+      background:#0b1220;
+      cursor:pointer;
     }
-    .mini p{ margin:0; font-size: 13px; }
+    .bar{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;
+      padding:12px 14px;
+    }
+    .name{
+      font-weight:900;font-size:14px;color:var(--text);
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%;
+      cursor:pointer;
+    }
+    .btnSmall{
+      border-radius:12px;padding:10px 12px;font-weight:900;font-size:13px;
+      text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+    }
+    .openBtn{border:1px solid var(--border);color:var(--text);background:#0b1220}
+    .dlBtn{background:linear-gradient(135deg,var(--accent), #16a34a);color:#05130a}
+    .copyBtn{border:1px solid #334155;color:#e5e7eb;background:#0b1220}
 
+    /* Modal */
+    .modal{
+      position:fixed;inset:0;background:#00000088;
+      display:none;align-items:center;justify-content:center;
+      padding:18px;z-index:999;
+    }
+    .modal.open{display:flex}
+    .panel{
+      width:min(980px, 100%);
+      max-height:90vh;overflow:auto;
+      border-radius:22px;border:1px solid var(--border);
+      background:#0b1220f2;
+      box-shadow:0 30px 90px #00000080;
+      padding:14px;
+    }
+    .top{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;
+      padding:8px 6px 12px;
+    }
+    .title{font-weight:950;font-size:14px}
+    .close{
+      border:1px solid var(--border);background:#0b1220;color:var(--text);
+      padding:10px 12px;border-radius:14px;font-weight:950;cursor:pointer;
+    }
+    .imgwrap{
+      border:1px solid var(--border);
+      border-radius:18px;overflow:hidden;background:#0b1220;
+    }
+    .imgwrap img{width:100%;height:auto;display:block}
+    .bottom{
+      display:flex;gap:10px;flex-wrap:wrap;
+      align-items:center;justify-content:space-between;
+      padding:12px 6px 6px;
+    }
+    .muted{color:var(--muted);font-weight:900;font-size:12px}
+
+    /* Sections */
+    section{scroll-margin-top:90px}
     footer{
-      margin-top: 18px;
-      color:var(--muted);
-      font-size: 12px;
-      text-align:center;
-      padding: 10px 0 0;
+      margin-top:18px;color:var(--muted);font-size:12px;text-align:center;padding:10px 0 0;
     }
 
-    /* موبايل */
     @media (max-width: 860px){
-      .hero{ grid-template-columns: 1fr; }
-      .grid{ grid-template-columns: 1fr; }
-      h1{ font-size: 24px; }
+      .hero{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      h1{font-size:24px}
     }
   </style>
 </head>
@@ -192,76 +207,302 @@
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <div>
-          <div>موقعي</div>
-          <div style="color:#9ca3af;font-size:12px;font-weight:600;">نسخة بسيطة وجميلة</div>
+          <div>موقع الصور</div>
+          <div class="sub">عرض + بحث + تحميل (كل شيء في ملف واحد)</div>
         </div>
       </div>
 
       <nav class="nav">
         <a class="chip" href="#home">الرئيسية</a>
-        <a class="chip" href="#about">عنّي</a>
+        <a class="chip" href="#gallery">المعرض</a>
         <a class="chip" href="#contact">تواصل</a>
       </nav>
     </header>
 
-    <section class="hero" id="home">
+    <!-- HOME -->
+    <section id="home" class="hero">
       <div class="card">
-        <h1>مرحباً بك في موقعي 👋</h1>
+        <h1>مرحباً بك 👋</h1>
         <p>
-          دي صفحة بداية بسيطة، لكن شكلها مرتب ومناسب للموبايل. تقدر تضيف صورك ومعلوماتك
-          وتعمل صفحات تانية بعد كده.
+          ده موقع صور بسيط لكن “مكمل”: معرض، بحث، معاينة، وزر تحميل مباشر.
+          كل حاجة جوه <b>index.html</b> — مفيش ملفات تانية.
         </p>
 
         <div class="actions">
-          <button class="btn btn-primary" onclick="alert('تمام! قولّي عايز الزرار يعمل إيه (يفتح صفحة؟ ينزل ملف؟ يروح لمكان؟)')">
-            ابدأ الآن
-          </button>
-
-          <a class="btn btn-secondary" href="#about" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">
-            اعرف أكتر
-          </a>
+          <a class="btn btn-primary" href="#gallery">ادخل المعرض</a>
+          <a class="btn btn-secondary" href="#contact">تواصل بالإيميل</a>
         </div>
 
-        <div class="grid" id="about">
+        <div class="grid3">
           <div class="card mini">
-            <h3>🎨 تصميم</h3>
-            <p>كروت + ظل خفيف + شكل حديث.</p>
+            <h3>🔎 بحث</h3>
+            <p>ابحث باسم الصورة بسرعة.</p>
           </div>
           <div class="card mini">
-            <h3>📱 موبايل</h3>
-            <p>بيظبط نفسه تلقائيًا على الشاشات الصغيرة.</p>
+            <h3>⬇️ تحميل</h3>
+            <p>تحميل مباشر لكل صورة.</p>
           </div>
           <div class="card mini">
-            <h3>⚡ بسيط</h3>
-            <p>HTML + CSS فقط، سريع وسهل التعديل.</p>
+            <h3>🖼️ معاينة</h3>
+            <p>اضغط الصورة لتفتح Full Preview.</p>
           </div>
         </div>
       </div>
 
-      <div class="card image-wrap">
-        <div class="img">
-          <img src="https://via.placeholder.com/900x600" alt="صورة تجريبية">
+      <div class="card">
+        <h3 style="margin:0 0 8px;font-size:16px;">✅ طريقة الاستخدام</h3>
+        <p style="margin:0;">
+          1) ارفع صورك في الريبو (زي ما رفعت الصورة الطويلة).<br>
+          2) ضيف أسماء الصور في القائمة <b>IMAGES</b> داخل الكود (مرة واحدة).<br>
+          3) خلصنا.
+        </p>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" style="margin-top:16px">
+      <div class="card">
+        <h2 style="margin:0 0 6px;font-size:18px">📸 المعرض</h2>
+        <p style="margin:0">اكتب جزء من اسم الصورة، اختار نوع الملف، وغيّر الترتيب.</p>
+
+        <div class="toolbar">
+          <div class="leftTools">
+            <input id="q" class="input" placeholder="ابحث باسم الصورة… (مثال: cell أو jpg)" />
+            <select id="type">
+              <option value="all">كل الملفات</option>
+              <option value="jpg">JPG</option>
+              <option value="png">PNG</option>
+              <option value="webp">WEBP</option>
+            </select>
+            <select id="sort">
+              <option value="name_asc">الاسم (A → Z)</option>
+              <option value="name_desc">الاسم (Z → A)</option>
+            </select>
+          </div>
+
+          <div class="rightTools">
+            <span class="badge" id="count">0 صورة</span>
+            <button class="btn btn-secondary" id="clearBtn" type="button">مسح البحث</button>
+          </div>
         </div>
-        <div class="caption">
-          تقدر تستبدل الصورة دي بصورة من عندك (هقولك إزاي).
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div id="grid" class="gallery"></div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="margin-top:16px">
+      <div class="card">
+        <h2 style="margin:0 0 6px;font-size:18px">📩 تواصل</h2>
+        <p>
+          ده زر إيميل جاهز. لو عايزه يروح لإيميلك الحقيقي،
+          عدّل كلمة <b>example@email.com</b> في الكود تحت.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary"
+             href="mailto:example@email.com?subject=Hello%20from%20your%20gallery&body=Hi%2C%20I%20visited%20your%20website."
+          >إرسال رسالة</a>
+
+          <a class="btn btn-secondary" href="#home">رجوع للرئيسية</a>
         </div>
 
-        <div class="card mini" id="contact">
-          <h3>📩 تواصل</h3>
-          <p>
-            اكتب هنا وسائل التواصل بتاعتك (Instagram / WhatsApp / Email).
-          </p>
+        <div class="muted" style="margin-top:10px">
+          ملاحظة: GitHub Pages موقع Static، يعني مفيش “رفع صور من الزوار” بدون سيرفر.
         </div>
       </div>
     </section>
 
     <footer>
-      © <span id="year"></span> — تم إنشاؤه باستخدام GitHub Pages
+      © <span id="year"></span> — GitHub Pages
     </footer>
   </div>
 
+  <!-- MODAL -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="panel">
+      <div class="top">
+        <div class="title" id="mTitle">Image</div>
+        <button class="close" id="mClose">إغلاق ✕</button>
+      </div>
+
+      <div class="imgwrap">
+        <img id="mImg" src="" alt="Preview" />
+      </div>
+
+      <div class="bottom">
+        <div class="muted" id="mPath"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btnSmall copyBtn" id="mCopy" type="button">نسخ الرابط</button>
+          <a class="btnSmall openBtn" id="mOpen" href="#" target="_blank" rel="noopener">فتح</a>
+          <a class="btnSmall dlBtn" id="mDownload" href="#" download>تحميل</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // =========================
+    // ✅ 1) اكتب أسماء صورك هنا
+    // =========================
+    const IMAGES = [
+      "ee6999e26bc1504415498dab666680e.jpg"
+      // مثال لو رفعت صور تانية:
+      // "photo2.jpg",
+      // "img3.png"
+    ];
+
+    // =========================
+    // UI Elements
+    // =========================
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+    const typeSel = document.getElementById("type");
+    const sortSel = document.getElementById("sort");
+    const count = document.getElementById("count");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const modal = document.getElementById("modal");
+    const mImg = document.getElementById("mImg");
+    const mTitle = document.getElementById("mTitle");
+    const mPath = document.getElementById("mPath");
+    const mDownload = document.getElementById("mDownload");
+    const mOpen = document.getElementById("mOpen");
+    const mCopy = document.getElementById("mCopy");
+    const mClose = document.getElementById("mClose");
+
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Turn into objects
+    function extOf(name){
+      const parts = name.toLowerCase().split(".");
+      return parts.length > 1 ? parts[parts.length-1] : "";
+    }
+    const itemsBase = IMAGES.map(name => ({
+      name,
+      url: name,     // لأنك رافع الصور في نفس مكان index.html
+      ext: extOf(name)
+    }));
+
+    function openModal(item){
+      mImg.src = item.url;
+      mTitle.textContent = item.name;
+      mPath.textContent = item.url;
+
+      mDownload.href = item.url;
+      mDownload.setAttribute("download", item.name);
+
+      mOpen.href = item.url;
+
+      modal.classList.add("open");
+    }
+    function closeModal(){
+      modal.classList.remove("open");
+      mImg.src = "";
+    }
+
+    mClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
+    document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        mCopy.textContent = "تم النسخ ✅";
+        setTimeout(()=> mCopy.textContent="نسخ الرابط", 1200);
+      }catch{
+        // fallback
+        const t = document.createElement("textarea");
+        t.value = text;
+        document.body.appendChild(t);
+        t.select();
+        document.execCommand("copy");
+        document.body.removeChild(t);
+        mCopy.textContent = "تم النسخ ✅";
+        setTimeout(()=> mCopy.textContent="نسخ الرابط", 1200);
+      }
+    }
+    mCopy.addEventListener("click", ()=> copyText(mOpen.href));
+
+    function sortItems(list){
+      const mode = sortSel.value;
+      const arr = [...list];
+      if(mode === "name_asc") arr.sort((a,b)=> a.name.localeCompare(b.name));
+      if(mode === "name_desc") arr.sort((a,b)=> b.name.localeCompare(a.name));
+      return arr;
+    }
+
+    function filterItems(){
+      const term = (q.value || "").trim().toLowerCase();
+      const t = typeSel.value;
+
+      let list = itemsBase;
+
+      // type filter
+      if(t !== "all"){
+        list = list.filter(x => x.ext === t);
+      }
+
+      // search filter
+      if(term){
+        list = list.filter(x => x.name.toLowerCase().includes(term));
+      }
+
+      list = sortItems(list);
+      render(list);
+    }
+
+    function render(list){
+      grid.innerHTML = "";
+      count.textContent = `${list.length} صورة`;
+
+      if(list.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "card";
+        empty.innerHTML = `
+          <h3 style="margin:0 0 6px">مفيش نتائج 😅</h3>
+          <p style="margin:0">غيّر البحث أو النوع أو تأكد إن أسماء الصور صح في IMAGES.</p>
+        `;
+        grid.appendChild(empty);
+        return;
+      }
+
+      list.forEach(item=>{
+        const card = document.createElement("div");
+        card.className = "card pic";
+
+        card.innerHTML = `
+          <img class="thumb" src="${item.url}" alt="${item.name}">
+          <div class="bar">
+            <div class="name" title="${item.name}">${item.name}</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <a class="btnSmall openBtn" href="${item.url}" target="_blank" rel="noopener">فتح</a>
+              <a class="btnSmall dlBtn" href="${item.url}" download="${item.name}">تحميل</a>
+            </div>
+          </div>
+        `;
+
+        card.querySelector(".thumb").addEventListener("click", ()=> openModal(item));
+        card.querySelector(".name").addEventListener("click", ()=> openModal(item));
+        grid.appendChild(card);
+      });
+    }
+
+    clearBtn.addEventListener("click", ()=>{
+      q.value = "";
+      typeSel.value = "all";
+      sortSel.value = "name_asc";
+      filterItems();
+    });
+
+    q.addEventListener("input", filterItems);
+    typeSel.addEventListener("change", filterItems);
+    sortSel.addEventListener("change", filterItems);
+
+    // First render
+    filterItems();
   </script>
 </body>
 </html>

@@ -251,10 +251,7 @@
 
       <div class="card">
         <h3 style="margin:0 0 8px;font-size:16px;">✅ طريقة الاستخدام</h3>
-        <p style="margin:0;">
-          1) ارفع صورك في الريبو (زي ما رفعت الصورة الطويلة).<br>
-          2) ضيف أسماء الصور في القائمة <b>IMAGES</b> داخل الكود (مرة واحدة).<br>
-          3) خلصنا.
+        <p style="margin:0;"
         </p>
       </div>
     </section>
@@ -296,8 +293,7 @@
     <section id="contact" style="margin-top:16px">
       <div class="card">
         <h2 style="margin:0 0 6px;font-size:18px">📩 تواصل</h2>
-        <p>
-          ده زر إيميل جاهز. لو عايزه يروح لإيميلك الحقيقي،
+       <p> </p>
           عدّل كلمة <b>example@email.com</b> في الكود تحت.
         </p>
 
@@ -310,7 +306,7 @@
         </div>
 
         <div class="muted" style="margin-top:10px">
-          ملاحظة: GitHub Pages موقع Static، يعني مفيش “رفع صور من الزوار” بدون سيرفر.
+          ملاحظة: GitHub Pages موقع Static، 
         </div>
       </div>
     </section>
@@ -344,136 +340,131 @@
   </div>
 
   <script>
-    // =========================
-    // ✅ 1) اكتب أسماء صورك هنا
-    // =========================
-    const IMAGES = [
-      "ee6999e26bc1504415498dab666680e.jpg"
-      // مثال لو رفعت صور تانية:
-      // "photo2.jpg",
-      // "img3.png"
-    ];
+/* ====== 1) قائمة الصور ====== */
+const IMAGES = [
+  "ee6999e26bc1504415498dab666680e.jpg"
+  // ضيف صور هنا…
+];
 
-    // =========================
-    // UI Elements
-    // =========================
-    const grid = document.getElementById("grid");
-    const q = document.getElementById("q");
-    const typeSel = document.getElementById("type");
-    const sortSel = document.getElementById("sort");
-    const count = document.getElementById("count");
-    const clearBtn = document.getElementById("clearBtn");
+/* ====== 2) عناصر الصفحة ====== */
+const grid = document.getElementById("grid");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+const modalDl  = document.getElementById("modalDl");
 
-    const modal = document.getElementById("modal");
-    const mImg = document.getElementById("mImg");
-    const mTitle = document.getElementById("mTitle");
-    const mPath = document.getElementById("mPath");
-    const mDownload = document.getElementById("mDownload");
-    const mOpen = document.getElementById("mOpen");
-    const mCopy = document.getElementById("mCopy");
-    const mClose = document.getElementById("mClose");
+const searchInput = document.getElementById("search");     // لو موجود
+const sortSelect  = document.getElementById("sort");       // لو موجود
+const countEl     = document.getElementById("count");      // لو موجود
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+/* ====== 3) أدوات مساعدة ====== */
+function normalize(name){
+  return (name || "").toLowerCase().trim();
+}
 
-    // Turn into objects
-    function extOf(name){
-      const parts = name.toLowerCase().split(".");
-      return parts.length > 1 ? parts[parts.length-1] : "";
-    }
-    const itemsBase = IMAGES.map(name => ({
-      name,
-      url: name,     // لأنك رافع الصور في نفس مكان index.html
-      ext: extOf(name)
-    }));
+function guessPath(name){
+  // لو الصورة في root هتشتغل
+  // لو في images/ هتشتغل برضه كـ fallback
+  const root = name;
+  const inImages = "images/" + name;
 
-    function openModal(item){
-      mImg.src = item.url;
-      mTitle.textContent = item.name;
-      mPath.textContent = item.url;
+  // هنحاول root الأول، ولو فشل نحاول images/
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(root);
+    img.onerror = () => resolve(inImages);
+    img.src = root;
+  });
+}
 
-      mDownload.href = item.url;
-      mDownload.setAttribute("download", item.name);
+function openModal(src){
+  modalImg.src = src;
+  modalDl.href = src;
+  modal.classList.add("open");
+}
 
-      mOpen.href = item.url;
+function closeModal(){
+  modal.classList.remove("open");
+  modalImg.src = "";
+}
 
-      modal.classList.add("open");
-    }
-    function closeModal(){
-      modal.classList.remove("open");
-      mImg.src = "";
-    }
+/* قفل المودال */
+if(modal){
+  modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+}
+document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
-    mClose.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
-    document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+/* ====== 4) بناء المعرض ====== */
+let items = [];
 
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        mCopy.textContent = "تم النسخ ✅";
-        setTimeout(()=> mCopy.textContent="نسخ الرابط", 1200);
-      }catch{
-        // fallback
-        const t = document.createElement("textarea");
-        t.value = text;
-        document.body.appendChild(t);
-        t.select();
-        document.execCommand("copy");
-        document.body.removeChild(t);
-        mCopy.textContent = "تم النسخ ✅";
-        setTimeout(()=> mCopy.textContent="نسخ الرابط", 1200);
-      }
-    }
-    mCopy.addEventListener("click", ()=> copyText(mOpen.href));
+async function buildItems(){
+  items = [];
+  for(const name of IMAGES){
+    const path = await guessPath(name);
+    items.push({ name, path });
+  }
+}
 
-    function sortItems(list){
-      const mode = sortSel.value;
-      const arr = [...list];
-      if(mode === "name_asc") arr.sort((a,b)=> a.name.localeCompare(b.name));
-      if(mode === "name_desc") arr.sort((a,b)=> b.name.localeCompare(a.name));
-      return arr;
-    }
+function render(list){
+  if(!grid) return;
 
-    function filterItems(){
-      const term = (q.value || "").trim().toLowerCase();
-      const t = typeSel.value;
+  grid.innerHTML = "";
+  list.forEach(({name, path})=>{
+    const div = document.createElement("div");
+    div.className = "pic";
+    div.innerHTML = `
+      <img src="${path}" alt="${name}">
+      <div class="bar">
+        <span style="max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn btn-open" href="${path}" target="_blank" rel="noopener">فتح</a>
+          <a class="btn btn-dl" href="${path}" download="${name}">تحميل</a>
+        </div>
+      </div>
+    `;
 
-      let list = itemsBase;
+    const imgEl = div.querySelector("img");
+    imgEl.addEventListener("click", ()=> openModal(path));
 
-      // type filter
-      if(t !== "all"){
-        list = list.filter(x => x.ext === t);
-      }
+    grid.appendChild(div);
+  });
 
-      // search filter
-      if(term){
-        list = list.filter(x => x.name.toLowerCase().includes(term));
-      }
+  if(countEl) countEl.textContent = `${list.length} صورة`;
+}
 
-      list = sortItems(list);
-      render(list);
-    }
+function apply(){
+  let list = [...items];
 
-    function render(list){
-      grid.innerHTML = "";
-      count.textContent = `${list.length} صورة`;
+  // بحث (لو عنصر البحث موجود)
+  if(searchInput){
+    const q = normalize(searchInput.value);
+    if(q) list = list.filter(x => normalize(x.name).includes(q));
+  }
 
-      if(list.length === 0){
-        const empty = document.createElement("div");
-        empty.className = "card";
-        empty.innerHTML = `
+  // ترتيب (لو موجود)
+  if(sortSelect){
+    const v = sortSelect.value;
+    if(v === "az") list.sort((a,b)=> a.name.localeCompare(b.name));
+    if(v === "za") list.sort((a,b)=> b.name.localeCompare(a.name));
+  }
+
+  render(list);
+}
+
+/* ====== 5) تشغيل ====== */
+(async function init(){
+  await buildItems();
+  apply();
+
+  if(searchInput) searchInput.addEventListener("input", apply);
+  if(sortSelect) sortSelect.addEventListener("change", apply);
+
+  // لو عندك زر بحث بدل input
+  const searchBtn = document.getElementById("searchBtn");
+  if(searchBtn) searchBtn.addEventListener("click", apply);
+})();
+  </script>
           <h3 style="margin:0 0 6px">مفيش نتائج 😅</h3>
-          <p style="margin:0">غيّر البحث أو النوع أو تأكد إن أسماء الصور صح في IMAGES.</p>
-        `;
-        grid.appendChild(empty);
-        return;
-      }
-
-      list.forEach(item=>{
-        const card = document.createElement("div");
-        card.className = "card pic";
-
-        card.innerHTML = `
+          <p style="margin:0">
           <img class="thumb" src="${item.url}" alt="${item.name}">
           <div class="bar">
             <div class="name" title="${item.name}">${item.name}</div>
@@ -482,27 +473,6 @@
               <a class="btnSmall dlBtn" href="${item.url}" download="${item.name}">تحميل</a>
             </div>
           </div>
-        `;
-
-        card.querySelector(".thumb").addEventListener("click", ()=> openModal(item));
-        card.querySelector(".name").addEventListener("click", ()=> openModal(item));
-        grid.appendChild(card);
-      });
-    }
-
-    clearBtn.addEventListener("click", ()=>{
-      q.value = "";
-      typeSel.value = "all";
-      sortSel.value = "name_asc";
-      filterItems();
-    });
-
-    q.addEventListener("input", filterItems);
-    typeSel.addEventListener("change", filterItems);
-    sortSel.addEventListener("change", filterItems);
-
-    // First render
-    filterItems();
   </script>
 </body>
 </html>

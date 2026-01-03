@@ -1,332 +1,73 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Pretty Pictures — Gallery</title>
-  <meta name="description" content="A Pinterest-style image gallery with search, tags, preview and download. Static & fast." />
-
   <style>
     :root{
-      --bg0:#0b1020;
-      --bg1:#0f172a;
-      --card:#0b1220cc;
-      --text:#e5e7eb;
-      --muted:#9ca3af;
-      --border:#243041;
-      --accent:#22c55e;
-      --accent2:#38bdf8;
-      --danger:#ef4444;
-      --shadow: 0 24px 70px rgba(0,0,0,.45);
-      --radius: 18px;
+      --bg1:#0f172a;--bg0:#0b1020;--card:#0b1220cc;--text:#e5e7eb;
+      --muted:#9ca3af;--border:#243041;--accent:#22c55e;--accent2:#38bdf8;
+      --shadow:0 24px 70px rgba(0,0,0,.45);--radius:18px;
     }
-
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
     body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
       background:
         radial-gradient(1200px 800px at 80% 10%, #1d4ed833, transparent 60%),
         radial-gradient(1000px 700px at 10% 20%, #22c55e22, transparent 55%),
-        linear-gradient(135deg,var(--bg1),#0b1020);
+        linear-gradient(135deg,var(--bg1),var(--bg0));
       min-height:100vh;
     }
-
-    a{color:inherit}
     .container{max-width:1180px;margin:0 auto;padding:18px 14px 60px}
-
-    /* Topbar */
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      padding:10px 0 18px;
-    }
-    .brand{display:flex; align-items:center; gap:10px}
-    .logo{
-      width:40px;height:40px;border-radius:14px;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow:0 18px 40px rgba(34,197,94,.15);
-      flex:0 0 auto;
-    }
-    .brand h1{margin:0;font-size:16px;font-weight:900;letter-spacing:.2px}
-    .brand .sub{margin-top:2px;color:var(--muted);font-size:12px;font-weight:800}
-
-    .nav{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
-    .chip{
-      text-decoration:none;
-      border:1px solid var(--border);
-      background:#0b122066;
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:800;
-      transition:.15s;
-    }
-    .chip:hover{border-color:#3b82f6aa; transform:translateY(-1px)}
-
-    /* Hero */
-    .hero{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-      align-items:stretch;
-      margin: 4px 0 14px;
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      padding:14px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-    .heroTitle{
-      margin:0 0 8px;
-      font-size:22px;
-      font-weight:1000;
-      letter-spacing:.2px;
-      line-height:1.2;
-    }
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0 18px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 18px 40px rgba(34,197,94,.15)}
+    .brand h1{margin:0;font-size:16px;font-weight:900}
+    .sub{margin-top:2px;color:var(--muted);font-size:12px;font-weight:800}
+    .nav{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{border:1px solid var(--border);background:#0b122066;padding:8px 12px;border-radius:999px;font-size:13px;font-weight:800;text-decoration:none;color:inherit;transition:.15s}
+    .chip:hover{border-color:#3b82f6aa;transform:translateY(-1px)}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:stretch;margin:4px 0 14px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+    .heroTitle{margin:0 0 8px;font-size:22px;font-weight:1000;line-height:1.2}
     .heroText{margin:0;color:var(--muted);line-height:1.7;font-size:14px}
-
-    /* Controls */
-    .controls{
-      display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center; justify-content:space-between;
-      margin-top: 12px;
-    }
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .input, .select{
-      width:min(520px,100%);
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background:#0b1220aa;
-      color:var(--text);
-      outline:none;
-      font-weight:800;
-      font-size:13px;
-    }
-    .select{width:auto}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:8px;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background:#0b1220;
-      color:var(--text);
-      font-weight:900;
-      font-size:13px;
-      cursor:pointer;
-      transition:.15s;
-      text-decoration:none;
-      user-select:none;
-    }
-    .btn:hover{border-color:#22c55e88; transform:translateY(-1px)}
-    .btnPrimary{
-      background:linear-gradient(135deg,var(--accent),#16a34a);
-      border:none;
-      color:#05130a;
-      box-shadow:0 18px 40px rgba(34,197,94,.18);
-    }
-    .btnDanger{
-      background:rgba(239,68,68,.12);
-      border-color:rgba(239,68,68,.35);
-      color:#fecaca;
-    }
-    .badge{
-      color:var(--muted);
-      font-weight:900;
-      font-size:12px;
-      white-space:nowrap;
-    }
-
-    /* Tag pills */
-    .tagsBar{
-      display:flex; gap:8px; flex-wrap:wrap;
-      margin-top: 12px;
-    }
-    .tag{
-      border:1px solid var(--border);
-      background:#0b122066;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      cursor:pointer;
-      transition:.12s;
-    }
-    .tag:hover{border-color:#38bdf888; transform:translateY(-1px)}
-    .tag.active{
-      border-color:#22c55eaa;
-      background:rgba(34,197,94,.12);
-    }
-
-    /* Masonry */
-    .masonry{
-      margin-top: 14px;
-      column-count: 4;
-      column-gap: 14px;
-    }
-    .pin{
-      break-inside: avoid;
-      margin: 0 0 14px;
-      border-radius: 18px;
-      overflow:hidden;
-      background:#0b1220;
-      border:1px solid var(--border);
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
-      transition: transform .15s, border-color .15s;
-    }
-    .pin:hover{transform:translateY(-2px); border-color:#3b82f6aa}
-    .pin img{
-      width:100%;
-      height:auto;
-      display:block;
-      background:#0b1220;
-      cursor:pointer;
-    }
-    .pinMeta{
-      padding:10px 12px 12px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .pinTitle{
-      font-weight:1000;
-      font-size:13px;
-      margin:0;
-      line-height:1.25;
-    }
-    .pinSub{
-      margin-top:4px;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-      display:flex; gap:6px; flex-wrap:wrap;
-    }
-    .tinyTag{
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:#0b122066;
-      font-size:11px;
-      font-weight:900;
-      color:var(--muted);
-    }
-    .pinActions{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .iconBtn{
-      width:36px; height:36px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:#0b1220;
-      color:var(--text);
-      cursor:pointer;
-      font-weight:1000;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      transition:.12s;
-    }
-    .iconBtn:hover{border-color:#22c55e88; transform:translateY(-1px)}
-
-    /* Modal */
-    .modal{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.65);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:999;
-    }
+    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .input,.select{padding:12px 12px;border-radius:14px;border:1px solid var(--border);background:#0b1220aa;color:var(--text);outline:none;font-weight:800;font-size:13px}
+    .input{width:min(520px,100%)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:14px;border:1px solid var(--border);background:#0b1220;color:var(--text);font-weight:900;font-size:13px;cursor:pointer;transition:.15s;text-decoration:none}
+    .btn:hover{border-color:#22c55e88;transform:translateY(-1px)}
+    .btnPrimary{background:linear-gradient(135deg,var(--accent),#16a34a);border:none;color:#05130a;box-shadow:0 18px 40px rgba(34,197,94,.18)}
+    .badge{color:var(--muted);font-weight:900;font-size:12px;white-space:nowrap}
+    .tagsBar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .tag{border:1px solid var(--border);background:#0b122066;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;cursor:pointer;transition:.12s;color:inherit}
+    .tag:hover{border-color:#38bdf888;transform:translateY(-1px)}
+    .tag.active{border-color:#22c55eaa;background:rgba(34,197,94,.12)}
+    .masonry{margin-top:14px;column-count:4;column-gap:14px}
+    .pin{break-inside:avoid;margin:0 0 14px;border-radius:18px;overflow:hidden;background:#0b1220;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.35);transition:.15s}
+    .pin:hover{transform:translateY(-2px);border-color:#3b82f6aa}
+    .pin img{width:100%;height:auto;display:block;background:#0b1220;cursor:pointer}
+    .pinMeta{padding:10px 12px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .pinTitle{font-weight:1000;font-size:13px;margin:0;line-height:1.25}
+    .pinSub{margin-top:4px;font-size:12px;color:var(--muted);font-weight:800;display:flex;gap:6px;flex-wrap:wrap}
+    .tinyTag{padding:3px 8px;border-radius:999px;border:1px solid var(--border);background:#0b122066;font-size:11px;font-weight:900;color:var(--muted)}
+    .iconBtn{width:36px;height:36px;border-radius:12px;border:1px solid var(--border);background:#0b1220;color:var(--text);cursor:pointer;font-weight:1000;display:inline-flex;align-items:center;justify-content:center;transition:.12s;text-decoration:none}
+    .iconBtn:hover{border-color:#22c55e88;transform:translateY(-1px)}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:18px;z-index:999}
     .modal.open{display:flex}
-    .modalPanel{
-      width:min(980px, 100%);
-      max-height: 90vh;
-      overflow:auto;
-      background:#0b1220f2;
-      border:1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: 0 30px 90px rgba(0,0,0,.7);
-      padding: 12px;
-    }
-    .modalTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 6px 6px 10px;
-    }
-    .modalTitle{
-      font-weight:1000;
-      font-size:14px;
-      margin:0;
-      max-width: 70%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .modalImgWrap{
-      border:1px solid var(--border);
-      border-radius: 18px;
-      overflow:hidden;
-      background:#0b1220;
-    }
+    .modalPanel{width:min(980px,100%);max-height:90vh;overflow:auto;background:#0b1220f2;border:1px solid var(--border);border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.7);padding:12px}
+    .modalTop{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 6px 10px}
+    .modalTitle{font-weight:1000;font-size:14px;margin:0;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .muted{color:var(--muted);font-weight:900;font-size:12px}
+    .modalImgWrap{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#0b1220}
     .modalImgWrap img{width:100%;height:auto;display:block}
-    .modalBottom{
-      display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center; justify-content:space-between;
-      padding: 10px 6px 6px;
-    }
-    .muted{color:var(--muted); font-weight:900; font-size:12px}
-
-    /* Dropzone */
-    .drop{
-      border:1px dashed rgba(56,189,248,.35);
-      background: rgba(56,189,248,.06);
-      border-radius: 16px;
-      padding: 12px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .drop strong{font-weight:1000}
-    .drop small{display:block;color:var(--muted);font-weight:800;margin-top:2px}
-
-    footer{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:900;
-      text-align:center;
-      padding-top: 10px;
-    }
-
-    /* Responsive */
-    @media (max-width:1100px){ .masonry{column-count:3} }
-    @media (max-width:860px){
-      .hero{grid-template-columns:1fr}
-      .masonry{column-count:2}
-      .topbar{flex-direction:column; align-items:flex-start}
-      .nav{justify-content:flex-start}
-    }
-    @media (max-width:520px){
-      .masonry{column-count:1}
-      .input{width:100%}
-    }
+    footer{margin-top:18px;color:var(--muted);font-size:12px;font-weight:900;text-align:center;padding-top:10px}
+    @media (max-width:1100px){.masonry{column-count:3}}
+    @media (max-width:860px){.hero{grid-template-columns:1fr}.masonry{column-count:2}.topbar{flex-direction:column;align-items:flex-start}}
+    @media (max-width:520px){.masonry{column-count:1}.input{width:100%}}
   </style>
 </head>
-
 <body>
   <div class="container">
     <header class="topbar">
@@ -337,10 +78,8 @@
           <div class="sub">Pinterest-style gallery • search • tags • preview • download</div>
         </div>
       </div>
-
-      <nav class="nav" aria-label="Top navigation">
+      <nav class="nav">
         <a class="chip" href="#gallery">Gallery</a>
-        <a class="chip" href="#add">Add</a>
         <a class="chip" href="#about">About</a>
       </nav>
     </header>
@@ -348,15 +87,12 @@
     <section class="hero">
       <div class="card">
         <h2 class="heroTitle">Discover beautiful images</h2>
-        <p class="heroText">
-          A fast, clean, static gallery inspired by Pinterest boards.
-          Everything runs in your browser (GitHub Pages friendly).
-        </p>
+        <p class="heroText">Fast static gallery for GitHub Pages.</p>
 
-        <div class="controls" style="margin-top:12px">
+        <div class="controls">
           <div class="row" style="flex:1">
-            <input id="q" class="input" placeholder="Search by title or tag (e.g. sky, flowers, nature)..." />
-            <select id="sort" class="select" aria-label="Sort">
+            <input id="q" class="input" placeholder="Search by title or tag..." />
+            <select id="sort" class="select">
               <option value="new">Sort: Newest</option>
               <option value="az">Sort: Title A → Z</option>
               <option value="za">Sort: Title Z → A</option>
@@ -368,56 +104,23 @@
           </div>
         </div>
 
-        <div id="tagsBar" class="tagsBar" aria-label="Tags"></div>
+        <div id="tagsBar" class="tagsBar"></div>
       </div>
 
-      <div class="card" id="add">
-        <div class="drop" id="drop">
-          <div>
-            <strong>Add images</strong>
-            <small>Upload from device or add by URL. Saved locally in your browser.</small>
-          </div>
-          <div class="row">
-            <label class="btn btnPrimary" for="file">
-              Upload
-            </label>
-            <input id="file" type="file" accept="image/*" multiple hidden />
-            <button id="addUrlBtn" class="btn">Add by URL</button>
-          </div>
-        </div>
-
-        <div style="height:10px"></div>
-
-        <div class="row" style="justify-content:space-between">
-          <div class="muted">Tip: If you want permanent hosting, put images in <b>/images/</b> in your repo.</div>
-          <button id="clearLocal" class="btn btnDanger">Clear local uploads</button>
-        </div>
+      <div class="card" id="about">
+        <h3 style="margin:0 0 8px;font-size:16px;font-weight:1000">About</h3>
+        <p class="heroText" style="margin:0">Click an image to preview. Use Download to save.</p>
       </div>
     </section>
 
     <main id="gallery">
-      <div id="masonry" class="masonry" aria-label="Image grid"></div>
-      <div style="height:10px"></div>
-      <div class="row" style="justify-content:center">
-        <button id="loadMore" class="btn">Load more</button>
-      </div>
+      <div id="masonry" class="masonry"></div>
     </main>
 
-    <section class="card" id="about" style="margin-top:14px">
-      <h3 style="margin:0 0 8px;font-size:16px;font-weight:1000">About</h3>
-      <p class="heroText" style="margin:0">
-        This is a static gallery designed for GitHub Pages. You can upload images (local only),
-        add by URL, or host your images in the repository under <b>images/</b>.
-      </p>
-    </section>
-
-    <footer>
-      © <span id="year"></span> • Built for GitHub Pages
-    </footer>
+    <footer>© <span id="year"></span> • Built for GitHub Pages</footer>
   </div>
 
-  <!-- Modal -->
-  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Image preview">
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
     <div class="modalPanel">
       <div class="modalTop">
         <div>
@@ -430,7 +133,6 @@
           <button id="mClose" class="btn">Close</button>
         </div>
       </div>
-
       <div class="modalImgWrap">
         <img id="mImg" alt="Preview image" />
       </div>
@@ -438,114 +140,11 @@
   </div>
 
   <script>
-    /* ===========================
-       DATA (Edit once)
-       =========================== */
-
-    // Permanent images (recommended): put files in /images and list them here.
-    // Example: { title:"Sunset Lake", src:"images/sunset.jpg", tags:["sky","nature"] }
-    const REPO_ITEMS = [
-      // If you uploaded your image next to index.html (root), you can use: { src:"yourfile.jpg" }
-      { title:"Design The Cell", src:"ee6999e26bc1504415498dab666680e.jpg", tags:["design","science","3d"] }
+    const ITEMS = [
+      { title:"Design The Cell", src:"images/ee6999e26bc1504415498dab666680e.jpg", tags:["design","science","3d"] }
     ];
 
-    // Default tag suggestions (will also auto-build from items)
-    const SUGGESTED_TAGS = ["nature","sky","flowers","scenery","aesthetic","wallpaper","sunset","ocean","mountains","city"];
-
-    /* ===========================
-       STATE + STORAGE
-       =========================== */
-
-    const LS_KEY = "pretty_pictures_local_items_v1";
-
-    /** local items shape: { id, title, src, tags, addedAt, kind:"local"|"url"|"repo" } */
-    function loadLocalItems(){
-      try{
-        const raw = localStorage.getItem(LS_KEY);
-        if(!raw) return [];
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-      }catch{ return []; }
-    }
-    function saveLocalItems(items){
-      localStorage.setItem(LS_KEY, JSON.stringify(items));
-    }
-
-    function uid(){
-      return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
-    }
-
-    function normalize(s){ return (s || "").toLowerCase().trim(); }
-
-    function splitTags(s){
-      return (s || "")
-        .split(/[,\n]/g)
-        .map(x => normalize(x))
-        .filter(Boolean)
-        .slice(0, 12);
-    }
-
-    async function resolveRepoSrc(src){
-      // supports: "file.jpg" (root) or "images/file.jpg"
-      // tries root first, then images/ fallback if not already.
-      if(!src) return src;
-      if(src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:")) return src;
-      if(src.startsWith("images/")) return src;
-
-      const root = src;
-      const inImages = "images/" + src;
-
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(root);
-        img.onerror = () => resolve(inImages);
-        img.src = root;
-      });
-    }
-
-    /* ===========================
-       BUILD ITEMS
-       =========================== */
-
-    let localItems = loadLocalItems();
-    let allItems = [];     // merged items
-    let filtered = [];     // after search/tag
-    let activeTag = "all";
-    let pageSize = 24;
-    let page = 1;
-
-    async function buildAllItems(){
-      const repo = [];
-      for(const it of REPO_ITEMS){
-        const src = await resolveRepoSrc(it.src);
-        repo.push({
-          id: uid(),
-          title: it.title || "Untitled",
-          src,
-          tags: Array.isArray(it.tags) ? it.tags.map(normalize).filter(Boolean) : [],
-          addedAt: Date.now(),
-          kind: "repo"
-        });
-      }
-
-      // localItems already contains data URLs or external URLs
-      allItems = [...localItems, ...repo];
-
-      // newest first by default
-      allItems.sort((a,b) => (b.addedAt || 0) - (a.addedAt || 0));
-    }
-
-    function getAllTags(items){
-      const set = new Set(["all", ...SUGGESTED_TAGS.map(normalize)]);
-      for(const it of items){
-        for(const t of (it.tags || [])) set.add(normalize(t));
-      }
-      return Array.from(set).filter(Boolean);
-    }
-
-    /* ===========================
-       UI ELEMENTS
-       =========================== */
+    const SUGGESTED_TAGS = ["all","nature","sky","flowers","scenery","aesthetic","wallpaper","sunset","ocean","mountains","city"];
 
     const yearEl = document.getElementById("year");
     const masonry = document.getElementById("masonry");
@@ -554,14 +153,7 @@
     const countEl = document.getElementById("count");
     const resetBtn = document.getElementById("reset");
     const tagsBar = document.getElementById("tagsBar");
-    const loadMoreBtn = document.getElementById("loadMore");
 
-    const fileEl = document.getElementById("file");
-    const addUrlBtn = document.getElementById("addUrlBtn");
-    const clearLocalBtn = document.getElementById("clearLocal");
-    const drop = document.getElementById("drop");
-
-    // Modal
     const modal = document.getElementById("modal");
     const mImg = document.getElementById("mImg");
     const mTitle = document.getElementById("mTitle");
@@ -572,102 +164,109 @@
 
     yearEl.textContent = new Date().getFullYear();
 
-    /* ===========================
-       RENDER
-       =========================== */
+    function normalize(s){ return (s||"").toLowerCase().trim(); }
 
-    function renderTags(items){
-      const tags = getAllTags(items);
-      tagsBar.innerHTML = "";
-      for(const t of tags){
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "tag" + (activeTag === t ? " active" : "");
-        b.textContent = t === "all" ? "All" : t;
-        b.addEventListener("click", () => {
-          activeTag = t;
-          page = 1;
-          renderTags(allItems);
-          applyFilters();
-        });
-        tagsBar.appendChild(b);
-      }
+    let activeTag = "all";
+
+    function getTags(){
+      const set = new Set(SUGGESTED_TAGS.map(normalize));
+      ITEMS.forEach(it => (it.tags||[]).forEach(t => set.add(normalize(t))));
+      return Array.from(set);
     }
 
+    function renderTags(){
+      const tags = getTags();
+      tagsBar.innerHTML = "";
+      tags.forEach(t=>{
+        const b = document.createElement("button");
+        b.className = "tag" + (activeTag===t ? " active": "");
+        b.textContent = t==="all" ? "All" : t;
+        b.onclick = ()=>{ activeTag=t; renderTags(); apply(); };
+        tagsBar.appendChild(b);
+      });
+    }
+
+    function openModal(item){
+      mImg.src = item.src;
+      mTitle.textContent = item.title || "Untitled";
+      mMeta.textContent = (item.tags||[]).length ? "Tags: " + item.tags.join(", ") : "";
+      mOpen.href = item.src;
+      mDl.href = item.src;
+      mDl.setAttribute("download", (item.title||"image") + ".jpg");
+      modal.classList.add("open");
+    }
+    function closeModal(){
+      modal.classList.remove("open");
+      mImg.src = "";
+    }
+
+    modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
+    mClose.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+
     function pinTemplate(item){
-      const title = item.title || "Untitled";
-      const tags = (item.tags || []).slice(0, 5);
-
-      const tagHtml = tags.map(t => `<span class="tinyTag">${t}</span>`).join("");
-
+      const tags = (item.tags||[]).slice(0,5).map(t=>`<span class="tinyTag">${t}</span>`).join("");
       return `
-        <div class="pin" data-id="${item.id}">
-          <img loading="lazy" src="${item.src}" alt="${title}">
+        <div class="pin">
+          <img src="${item.src}" alt="${item.title||"Untitled"}">
           <div class="pinMeta">
             <div>
-              <p class="pinTitle">${escapeHtml(title)}</p>
-              <div class="pinSub">${tagHtml}</div>
+              <p class="pinTitle">${item.title||"Untitled"}</p>
+              <div class="pinSub">${tags}</div>
             </div>
-            <div class="pinActions">
-              <button class="iconBtn" data-action="open" title="Preview">🔍</button>
-              <a class="iconBtn" data-action="download" title="Download" href="${item.src}" download>⬇️</a>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+              <button class="iconBtn" data-open="1">🔍</button>
+              <a class="iconBtn" href="${item.src}" download title="Download">⬇️</a>
             </div>
           </div>
         </div>
       `;
     }
 
-    function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    function renderGrid(list){
-      // paginate
-      const shown = list.slice(0, page * pageSize);
-
-      masonry.innerHTML = shown.map(pinTemplate).join("");
-
-      // bind click
-      masonry.querySelectorAll(".pin").forEach(pin => {
-        const id = pin.getAttribute("data-id");
-        const item = shown.find(x => x.id === id);
-        if(!item) return;
-
-        const img = pin.querySelector("img");
-        img.addEventListener("click", () => openModal(item));
-
-        const openBtn = pin.querySelector('[data-action="open"]');
-        openBtn.addEventListener("click", () => openModal(item));
+    function render(list){
+      masonry.innerHTML = list.map(pinTemplate).join("");
+      const pins = masonry.querySelectorAll(".pin");
+      pins.forEach((pin, i)=>{
+        const item = list[i];
+        pin.querySelector("img").onclick = ()=> openModal(item);
+        pin.querySelector("[data-open]").onclick = ()=> openModal(item);
       });
-
-      // count + load more toggle
       countEl.textContent = `${list.length} items`;
-      loadMoreBtn.style.display = (shown.length < list.length) ? "inline-flex" : "none";
     }
 
-    function applyFilters(){
+    function apply(){
+      let list = [...ITEMS];
       const q = normalize(qEl.value);
-      let list = [...allItems];
 
-      // tag filter
-      if(activeTag && activeTag !== "all"){
-        list = list.filter(it => (it.tags || []).map(normalize).includes(activeTag));
+      if(activeTag !== "all"){
+        list = list.filter(it => (it.tags||[]).map(normalize).includes(activeTag));
       }
-
-      // search
       if(q){
-        list = list.filter(it => {
+        list = list.filter(it=>{
           const t = normalize(it.title);
-          const tags = (it.tags || []).join(" ");
-          return t.includes(q) || normalize(tags).includes(q);
+          const tags = normalize((it.tags||[]).join(" "));
+          return t.includes(q) || tags.includes(q);
         });
       }
 
-      // sort
-      const s = sortEl.value;
-      if(s 
+      if(sortEl.value === "az") list.sort((a,b)=>(a.title||"").localeCompare(b.title||""));
+      if(sortEl.value === "za") list.sort((a,b)=>(b.title||"").localeCompare(a.title||""));
+
+      render(list);
+    }
+
+    qEl.addEventListener("input", apply);
+    sortEl.addEventListener("change", apply);
+    resetBtn.addEventListener("click", ()=>{
+      qEl.value = "";
+      sortEl.value = "new";
+      activeTag = "all";
+      renderTags();
+      apply();
+    });
+
+    renderTags();
+    apply();
+  </script>
+</body>
+</html>
